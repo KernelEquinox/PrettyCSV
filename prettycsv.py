@@ -84,7 +84,12 @@ print border
 for entry in entries:
 	entry = entry.split(delim)
 	for i in range(0, len(maxlen)):
-		space = maxlen[i] - len(entry[i])
+		# Handle Unicode printing.
+		try:
+			space = maxlen[i] - len(entry[i].encode("ascii"))
+		except:
+			# Adjust spacing for mixed Unicode/ASCII entries.
+			space = maxlen[i] - (len(entry[i]) / 2 + (len(entry[i]) % 2))
 		print "| %s%s" % (entry[i], "\x20"*space),
 	print "|"
 
